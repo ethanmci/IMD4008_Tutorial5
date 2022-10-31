@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">IMD4008_Tutorial5</string>
+    <string name="send_notification">Send Notification</string>
+    <string name="notification_hint">Enter your notification here!</string>
 </resources>
