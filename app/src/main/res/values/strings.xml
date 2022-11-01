@@ -4,4 +4,5 @@
     <string name="schedule_notification">Schedule Notification</string>
     <string name="notification_hint">Enter your notification here!</string>
     <string name="notification_timer_hint">Set the time for the notification!</string>
+    <string name="notification_id_hint">Set the id for the notification!</string>
 </resources>

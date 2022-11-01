@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_DEFAULT = 1100;
     TextInputEditText notificationText;
     TextInputEditText notificationTimer;
+    TextInputEditText notificationId;
     NotificationManager notificationManager;
 
     @Override
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         notificationText = findViewById(R.id.notifInput);
         notificationTimer = findViewById(R.id.notifTimerInput);
+        notificationId = findViewById(R.id.notifIdInput);
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -48,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
     public void notificationButton(View view) {
         Toast.makeText(MainActivity.this, "Notification sent!", Toast.LENGTH_SHORT).show();
 
-        sendNotification(NOTIFICATION_DEFAULT, "Notification");
+        int id;
+        if(notificationId.getText().toString().length() <= 0) id = NOTIFICATION_DEFAULT;
+        else id = Integer.parseInt(notificationId.getText().toString());
+
+        sendNotification(id, "Notification");
     }
 
     public void scheduleNotificationButton(View view) {
@@ -57,9 +63,12 @@ public class MainActivity extends AppCompatActivity {
         int delay;
         if(notificationTimer.getText().toString().length() <= 0) delay = 5000;
         else delay = Integer.parseInt(notificationTimer.getText().toString());
-        Log.d("NOTIF:", notificationTimer.getText().toString());
 
-        scheduleNotification(NOTIFICATION_DEFAULT, "Scheduled notification", delay);
+        int id;
+        if(notificationId.getText().toString().length() <= 0) id = NOTIFICATION_DEFAULT;
+        else id = Integer.parseInt(notificationId.getText().toString());
+
+        scheduleNotification(id, "Scheduled notification", delay);
     }
 
     public Notification buildNotification(String title, String body) {
