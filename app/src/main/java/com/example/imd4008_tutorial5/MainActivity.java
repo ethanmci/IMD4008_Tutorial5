@@ -3,14 +3,20 @@ package com.example.imd4008_tutorial5;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -20,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_DEFAULT = 1100;
     TextInputEditText notificationText;
     NotificationManager notificationManager;
-    Button sendNotificationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         notificationText = findViewById(R.id.notifInput);
-        sendNotificationBtn = findViewById(R.id.notifBtn);
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -37,13 +41,20 @@ public class MainActivity extends AppCompatActivity {
                 NotificationManager.IMPORTANCE_DEFAULT);
 
         notificationManager.createNotificationChannel(chn);
+    }
 
-        sendNotificationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    public void notificationButton(View view) {
+        Log.d("NOTIF:", "CLICKED!!");
+        Toast.makeText(MainActivity.this, "Notification sent!", Toast.LENGTH_SHORT).show();
 
-            }
-        });
+        sendNotification(NOTIFICATION_DEFAULT, "Notification");
+    }
+
+    public void scheduleNotificationButton(View view) {
+        Log.d("NOTIF:", "CLICKED SCH!!");
+        Toast.makeText(MainActivity.this, "Notification scheduled!", Toast.LENGTH_SHORT).show();
+
+        scheduleNotification(NOTIFICATION_DEFAULT, "Scheduled notification", 5000);
     }
 
     public Notification buildNotification(String title, String body) {
@@ -52,7 +63,29 @@ public class MainActivity extends AppCompatActivity {
                 .setContentText(body)
                 .setSmallIcon(R.drawable.notification_icon)
                 ;
-        Notification = nb.build;
+        Notification noti = nb.build();
         return noti;
+    }
+
+    public void sendNotification(int id, String title) {
+        Notification noti = buildNotification(title, notificationText.getText().toString());
+        if (noti != null) {
+            notificationManager.notify(id, noti);
+        }
+    }
+
+    public void scheduleNotification(int id, String title, int delay) {
+        Notification noti = buildNotification(title, notificationText.getText().toString());
+
+        Intent notificationIntent = new Intent(this, NotificationBroadcaster.class);
+        notificationIntent.putExtra(NotificationBroadcaster.NOTIFICATION_ID, id);
+        notificationIntent.putExtra(NotificationBroadcaster.NOTIFICATION, noti);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+                notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        long alarmTime = System.currentTimeMillis();
+        AlarmManager al = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        al.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
     }
 }

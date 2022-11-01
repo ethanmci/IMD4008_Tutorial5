@@ -20,10 +20,32 @@
             android:hint="@string/notification_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/notifTimerInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/notifTimerInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/notification_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/notifBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:onClick="notificationButton"
         android:text="@string/send_notification" />
+
+    <Button
+        android:id="@+id/scheduleBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="scheduleNotificationButton"
+        android:text="@string/schedule_notification" />
 </LinearLayout>
