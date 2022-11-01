@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String CHANNEL = "default";
     private static final int NOTIFICATION_DEFAULT = 1100;
     TextInputEditText notificationText;
+    TextInputEditText notificationTimer;
     NotificationManager notificationManager;
 
     @Override
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         notificationText = findViewById(R.id.notifInput);
+        notificationTimer = findViewById(R.id.notifTimerInput);
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -44,17 +46,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void notificationButton(View view) {
-        Log.d("NOTIF:", "CLICKED!!");
         Toast.makeText(MainActivity.this, "Notification sent!", Toast.LENGTH_SHORT).show();
 
         sendNotification(NOTIFICATION_DEFAULT, "Notification");
     }
 
     public void scheduleNotificationButton(View view) {
-        Log.d("NOTIF:", "CLICKED SCH!!");
         Toast.makeText(MainActivity.this, "Notification scheduled!", Toast.LENGTH_SHORT).show();
 
-        scheduleNotification(NOTIFICATION_DEFAULT, "Scheduled notification", 5000);
+        int delay;
+        if(notificationTimer.getText().toString().length() <= 0) delay = 5000;
+        else delay = Integer.parseInt(notificationTimer.getText().toString());
+        Log.d("NOTIF:", notificationTimer.getText().toString());
+
+        scheduleNotification(NOTIFICATION_DEFAULT, "Scheduled notification", delay);
     }
 
     public Notification buildNotification(String title, String body) {
